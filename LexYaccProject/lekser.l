@@ -5,27 +5,67 @@
 	#include "parser.h"
 %}
 INTEGER [0]|[1-9][0-9]*
-OPERATION "+"|"-"|"*"|"\"
 DOUBLE  {INTEGER}"."[0]*{INTEGER}
+PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
+VOID "void"
+CHAR_SEQUENCE [a-zA-Z0-9]*
+STRING "String"
+ACCESS_MODIFIER "public"|"private"|"protected"
+STRUCTURE "class"|"interface"|"enum"
+CONTROL_FLOW "for"|"while"|"if"|"else"
+NEW "new"
+BOOLEAN_LIT "true"|"false"
+NULL "null"
+ARGS_MATH_OP "+"|"-"|"*"|"\"|"+="|"-="|"*="|"/="
+ARG_MATH_OP "++"|"--"
+LOGICAL_OP "&&"|"\|\|"|">"|"=="|"<"|"=>"|"=<"|"!="|"!"
 OPEN_BLOCK "{"
 CLOSE_BLOCK "}"
-VARIABLE [a-zA-Z]([a-z]*|[A-Z]*|[0-9]
+OPEN_SQUARE "["
+CLOSE_SQUARE "]"
+OPEN_ROUND "("
+CLOSE_ROUND ")"
+MAIN_METHOD "public static void main(String"("..."|"[]")[a-zA-Z]+[a-zA-Z0-9]*")"
+DOT "."
+COMMA ","
+SEMICOLON ";"
+RETURN "return"
+VARIABLE [a-zA-Z][a-zA-Z0-9]*
 STRUCTURE "class"|"interface"
-PRIMITIVES "int"|"float"|"double"|"char"|"boolean"
 ASSIGN "="
-IMPORT "static "?"import "[ab]+
-
+WHITE_SYMBOL " "|\t|\n
 
 %%
 {INTEGER}   { yylval=atoi(yytext); return INTEGER; }
 {DOUBLE}    { yylval=atoi(yytext); return DOUBLE; }
-{OPERATION} { }
-;
-
-"+"     return yytext[0];
-"-"     return yytext[0];
-"*"     return yytext[0];
-"/"     return yytext[0];
-.       ;
+{PRIMITIVE} { return PRIMITIVE; }
+{VOID} { return VOID; }
+{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
+{STRING} { return STRING; }
+{ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
+{STRUCTURE} { return STRUCTURE; }
+{CONTROL_FLOW} { return CONTROL_FLOW; }
+{NEW} { return NEW; }
+{BOOLEAN_LIT} { return BOOLEAN_LIT; }
+{NULL} { return NULL; }
+{ARG_MATH_OP} { return ARG_MATH_OP; }
+{ARGS_MATH_OP} { return ARGS_MATH_OP; }
+{LOGICAL_OP} { return LOGICAL_OP; }
+{OPEN_BLOCK} { return OPEN_BLOCK; }
+{CLOSE_BLOCK} { return CLOSE_BLOCK; }
+{OPEN_SQUARE} { return OPEN_SQUARE; }
+{CLOSE_SQUARE} { return CLOSE_SQUARE; }
+{OPEN_ROUND} { return OPEN_ROUND; }
+{CLOSE_ROUND} { return CLOSE_ROUND; }
+{MAIN_METHOD} { return MAIN_METHOD; }
+{DOT} { return DOT; }
+{COMMA} { return COMMA; }
+{SEMICOLON} { return SEMICOLON; }
+{RETURN} { return RETURN; }
+{VARIABLE} { return VARIABLE; }
+{STRUCTURE} { return STRUCTURE; }
+{ASSIGN} { return ASSIGN; };
+{WHITE_SYMBOL} { return WHITE_SYMBOL; }
+. { return ERROR; };
 [\n]    return ENDL;
 %%
