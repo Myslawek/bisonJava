@@ -1,0 +1,11 @@
+﻿  Custom build step: Lex
+  Custom build step: Yacc
+  parser.y: konflikty: 16 przesuniecie/redukcja
+D:\programy\microsoftVisualStudio2019\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\studia\wdk\projekt\lexyaccproject\oparser.c" has not been created. This may cause incremental build to work incorrectly.
+D:\programy\microsoftVisualStudio2019\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\studia\wdk\projekt\lexyaccproject\oparser.h" has not been created. This may cause incremental build to work incorrectly.
+cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  parser.c
+  lekser.c
+lekser.c(1248,47): warning C4013: 'fileno' undefined; assuming extern returning int
+  Generating Code...
+  LexYacc.vcxproj -> D:\studia\wdk\projekt\LexYaccProject\Debug\LexYacc.exe
