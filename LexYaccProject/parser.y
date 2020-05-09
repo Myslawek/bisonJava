@@ -3,23 +3,44 @@
 	#include <stdio.h>
 	#include <math.h>
 	void yyerror(char *s);
-	int yylex();
-	extern FILE* yyin;
 %}
-%token DOUBLE
 %token INTEGER
-%token ENDL
+%token DOUBLE
+%token PRIMITIVE
+%token VOID "void"
+%token CHAR_SEQUENCE
+%token STRING
+%token ACCESS_MODIFIER
+%token STRUCTURE
+%token CONTROL_FLOW
+%token NEW
+%token BOOLEAN_LIT
+%token _NULL
+%token ARGS_MATH_OP
+%token ARG_MATH_OP
+%token LOGICAL_OP
+%token OPEN_BLOCK
+%token CLOSE_BLOCK
+%token OPEN_SQUARE
+%token CLOSE_SQUARE
+%token OPEN_ROUND
+%token CLOSE_ROUND
+%token MAIN_METHOD
+%token DOT
+%token COMMA
+%token SEMICOLON
+%token RETURN
+%token VARIABLE
+%token ASSIGN
+%token WHITE_SYMBOL
+%token ERROR
 %%
-program: program wyrazenie ENDL { printf("= %d \n",$2); }
+
+/*Podstawowa regula sprawdzajacy po prostu czy program dziala*/
+program: program PRIMITIVE WHITE_SYMBOL CHAR_SEQUENCE SEMICOLON { printf("ZAAKCEPTOWANO NAPIS\n"); }
 |
 ;
 
-wyrazenie: INTEGER { $$ = $1; }
-| wyrazenie '+' wyrazenie { $$ =  $1 + $3}
-| wyrazenie '-' wyrazenie { $$ =  $1 - $3}
-| wyrazenie '*' wyrazenie { $$ =  $1 * $3}
-| wyrazenie '/' wyrazenie { if($3!=0) $$ =  $1 / $3; else yyerror("Dzielenie przez 0"); } 
-;
 %%
 
 void yyerror(char *s) {
@@ -28,6 +49,11 @@ void yyerror(char *s) {
 
 int main() 
 {
+	SetInputFile("Program.txt");
+
     yyparse();    
-    return 0;
+
+	CloseInputFile();
+    
+	return 0;
 }

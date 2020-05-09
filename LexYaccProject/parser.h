@@ -39,9 +39,36 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     DOUBLE = 258,
-     INTEGER = 259,
-     ENDL = 260
+     INTEGER = 258,
+     DOUBLE = 259,
+     PRIMITIVE = 260,
+     VOID = 261,
+     CHAR_SEQUENCE = 262,
+     STRING = 263,
+     ACCESS_MODIFIER = 264,
+     STRUCTURE = 265,
+     CONTROL_FLOW = 266,
+     NEW = 267,
+     BOOLEAN_LIT = 268,
+     _NULL = 269,
+     ARGS_MATH_OP = 270,
+     ARG_MATH_OP = 271,
+     LOGICAL_OP = 272,
+     OPEN_BLOCK = 273,
+     CLOSE_BLOCK = 274,
+     OPEN_SQUARE = 275,
+     CLOSE_SQUARE = 276,
+     OPEN_ROUND = 277,
+     CLOSE_ROUND = 278,
+     MAIN_METHOD = 279,
+     DOT = 280,
+     COMMA = 281,
+     SEMICOLON = 282,
+     RETURN = 283,
+     VARIABLE = 284,
+     ASSIGN = 285,
+     WHITE_SYMBOL = 286,
+     ERROR = 287
    };
 #endif
 

@@ -3,7 +3,13 @@
 %{
 	#include <stdlib.h> 
 	#include "parser.h"
+
+	void SetInputFile(const char* strFileName);
+	void CloseInputFile();
+
+	FILE* pInputFile = NULL;
 %}
+
 INTEGER [0]|[1-9][0-9]*
 DOUBLE  {INTEGER}"."[0]*{INTEGER}
 PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
@@ -16,7 +22,7 @@ CONTROL_FLOW "for"|"while"|"if"|"else"
 NEW "new"
 BOOLEAN_LIT "true"|"false"
 NULL "null"
-ARGS_MATH_OP "+"|"-"|"*"|"\"|"+="|"-="|"*="|"/="
+ARGS_MATH_OP "+"|"-"|"*"|"/"|"+="|"-="|"*="|"/="
 ARG_MATH_OP "++"|"--"
 LOGICAL_OP "&&"|"\|\|"|">"|"=="|"<"|"=>"|"=<"|"!="|"!"
 OPEN_BLOCK "{"
@@ -31,7 +37,6 @@ COMMA ","
 SEMICOLON ";"
 RETURN "return"
 VARIABLE [a-zA-Z][a-zA-Z0-9]*
-STRUCTURE "class"|"interface"
 ASSIGN "="
 WHITE_SYMBOL " "|\t|\n
 
@@ -47,7 +52,7 @@ WHITE_SYMBOL " "|\t|\n
 {CONTROL_FLOW} { return CONTROL_FLOW; }
 {NEW} { return NEW; }
 {BOOLEAN_LIT} { return BOOLEAN_LIT; }
-{NULL} { return NULL; }
+{NULL} { return _NULL; }
 {ARG_MATH_OP} { return ARG_MATH_OP; }
 {ARGS_MATH_OP} { return ARGS_MATH_OP; }
 {LOGICAL_OP} { return LOGICAL_OP; }
@@ -63,9 +68,21 @@ WHITE_SYMBOL " "|\t|\n
 {SEMICOLON} { return SEMICOLON; }
 {RETURN} { return RETURN; }
 {VARIABLE} { return VARIABLE; }
-{STRUCTURE} { return STRUCTURE; }
 {ASSIGN} { return ASSIGN; };
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
 . { return ERROR; };
-[\n]    return ENDL;
 %%
+
+void SetInputFile(const char* strFileName){
+	if(strFileName){
+		pInputFile = fopen(strFileName, "r");
+		yyin = pInputFile;
+	}
+}
+
+void CloseInputFile(){
+	if(pInputFile){
+		fclose(pInputFile);
+		pInputFile = NULL;
+	}
+}
