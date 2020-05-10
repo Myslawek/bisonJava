@@ -10,10 +10,12 @@
 	FILE* pInputFile = NULL;
 %}
 
-NATURAL [0]|[1-9][0-9]*
-INTEGER "-"?{NATURAL}
-DOUBLE  {INTEGER}"."[0]*{NATURAL}
-PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
+NATURAL_NUMBER [0]|[1-9][0-9]*
+WHOLE_NUMBER "-"?{NATURAL_NUMBER}
+REAL_NUMBER  {WHOLE_NUMBER}"."[0]*{NATURAL_NUMBER}
+WHOLE_NUM_PRIMITIVE "byte"|"char"|"short"|"int"|"long"
+REAL_NUM_PRIMITIVE "float"|"double"
+BOOLEAN "boolean"
 VOID "void"
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
