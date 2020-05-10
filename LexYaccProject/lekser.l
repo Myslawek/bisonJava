@@ -14,7 +14,8 @@ INTEGER [0]|[1-9][0-9]*
 DOUBLE  {INTEGER}"."[0]*{INTEGER}
 PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
 VOID "void"
-CHAR_SEQUENCE [a-zA-Z0-9]*
+VARIABLE [a-zA-Z][a-zA-Z0-9]*
+CHAR_SEQUENCE '\"'[a-zA-Z0-9]*'\"'
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
 STRUCTURE "class"|"interface"|"enum"
@@ -36,7 +37,6 @@ DOT "."
 COMMA ","
 SEMICOLON ";"
 RETURN "return"
-VARIABLE [a-zA-Z][a-zA-Z0-9]*
 ASSIGN "="
 WHITE_SYMBOL " "|\t|\n
 
