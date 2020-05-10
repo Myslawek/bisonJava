@@ -4,9 +4,11 @@
 	#include <math.h>
 	void yyerror(char *s);
 %}
-%token INTEGER
-%token DOUBLE
-%token PRIMITIVE
+%token WHOLE_NUMBER
+%token REAL_NUMBER
+%token WHOLE_NUM_PRIMITIVE
+%token REAL_NUM_PRIMITIVE
+%token BOOLEAN
 %token VOID
 %token CHAR_SEQUENCE
 %token STRING
