@@ -1,4 +1,0 @@
-^D:\STUDIA\WDK\PROJEKT\LEXYACCPROJECT\LEKSER.L
-flex -olekser.c lekser.l
-^D:\STUDIA\WDK\PROJEKT\LEXYACCPROJECT\PARSER.Y
-bison  -d  -oparser.c parser.y
