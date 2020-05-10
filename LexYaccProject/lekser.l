@@ -10,12 +10,11 @@
 	FILE* pInputFile = NULL;
 %}
 
-INTEGER [0]|[1-9][0-9]*
-DOUBLE  {INTEGER}"."[0]*{INTEGER}
+NATURAL [0]|[1-9][0-9]*
+INTEGER "-"?{NATURAL}
+DOUBLE  {INTEGER}"."[0]*{NATURAL}
 PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
 VOID "void"
-VARIABLE [a-zA-Z][a-zA-Z0-9]*
-CHAR_SEQUENCE '\"'[a-zA-Z0-9]*'\"'
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
 STRUCTURE "class"|"interface"|"enum"
@@ -38,14 +37,15 @@ COMMA ","
 SEMICOLON ";"
 RETURN "return"
 ASSIGN "="
+VARIABLE [a-zA-Z][a-zA-Z0-9]*
+CHAR_SEQUENCE "\""[a-zA-Z0-9]*"\""
 WHITE_SYMBOL " "|\t|\n
 
 %%
-{INTEGER}   { yylval=atoi(yytext); return INTEGER; }
-{DOUBLE}    { yylval=atoi(yytext); return DOUBLE; }
+{INTEGER}   { return INTEGER; }
+{DOUBLE}    { return DOUBLE; }
 {PRIMITIVE} { return PRIMITIVE; }
 {VOID} { return VOID; }
-{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {STRING} { return STRING; }
 {ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
 {STRUCTURE} { return STRUCTURE; }
@@ -67,10 +67,11 @@ WHITE_SYMBOL " "|\t|\n
 {COMMA} { return COMMA; }
 {SEMICOLON} { return SEMICOLON; }
 {RETURN} { return RETURN; }
-{VARIABLE} { return VARIABLE; }
 {ASSIGN} { return ASSIGN; };
+{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
+{VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
-. { return ERROR; };
+. { printf("none\n"); return ERROR; };
 %%
 
 void SetInputFile(const char* strFileName){
