@@ -36,15 +36,30 @@
 %token ERROR
 %%
 
-/*Podstawowa regula sprawdzajacy po prostu czy program dziala*/
-program: program PRIMITIVE WHITE_SYMBOL CHAR_SEQUENCE SEMICOLON { printf("ZAAKCEPTOWANO NAPIS\n"); }
+program: program instruction {printf("Poprawny kod");}
 |
+;
+
+instruction: declaration SEMICOLON 
+| definition SEMICOLON
+;
+
+declaration: PRIMITIVE ws VARIABLE  
+| PRIMITIVE ws VARIABLE ws 
+;
+
+definition: declaration ASSIGN INTEGER 
+| declaration ASSIGN ws INTEGER 
+;
+
+ws: ws WHITE_SYMBOL
+| WHITE_SYMBOL
 ;
 
 %%
 
 void yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "\n%s\n", s);
 }
 
 int main() 
