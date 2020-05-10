@@ -41,15 +41,30 @@ program: program instruction {printf("Poprawny kod");}
 ;
 
 instruction: declaration SEMICOLON 
+| declaration ws SEMICOLON 
 | definition SEMICOLON
+| definition ws SEMICOLON 
 ;
 
-declaration: PRIMITIVE ws VARIABLE  
-| PRIMITIVE ws VARIABLE ws 
+declaration: assignable_primitive ws VARIABLE  
+| assignable_primitive ws VARIABLE ws 
 ;
 
-definition: declaration ASSIGN INTEGER 
-| declaration ASSIGN ws INTEGER 
+definition: WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
+| REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
+| REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
+| BOOLEAN var_assign BOOLEAN_LIT 
+;
+
+var_assign: ws VARIABLE ws ASSIGN ws
+| ws VARIABLE ws ASSIGN 
+| ws VARIABLE ASSIGN
+| ws VARIABLE ASSIGN ws
+;
+
+assignable_primitive: WHOLE_NUM_PRIMITIVE 
+| REAL_NUM_PRIMITIVE 
+| BOOLEAN
 ;
 
 ws: ws WHITE_SYMBOL

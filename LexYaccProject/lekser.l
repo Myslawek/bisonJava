@@ -42,9 +42,11 @@ CHAR_SEQUENCE "\""[a-zA-Z0-9]*"\""
 WHITE_SYMBOL " "|\t|\n
 
 %%
-{INTEGER}   { return INTEGER; }
-{DOUBLE}    { return DOUBLE; }
-{PRIMITIVE} { return PRIMITIVE; }
+{WHOLE_NUMBER}   { return WHOLE_NUMBER; }
+{REAL_NUMBER}    { return REAL_NUMBER; }
+{WHOLE_NUM_PRIMITIVE} { return WHOLE_NUM_PRIMITIVE; } 
+{REAL_NUM_PRIMITIVE}  { return REAL_NUM_PRIMITIVE; }
+{BOOLEAN} { return BOOLEAN; }
 {VOID} { return VOID; }
 {STRING} { return STRING; }
 {ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
@@ -67,7 +69,7 @@ WHITE_SYMBOL " "|\t|\n
 {COMMA} { return COMMA; }
 {SEMICOLON} { return SEMICOLON; }
 {RETURN} { return RETURN; }
-{ASSIGN} { return ASSIGN; };
+{ASSIGN} { return ASSIGN; }
 {CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
