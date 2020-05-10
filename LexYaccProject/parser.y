@@ -7,7 +7,7 @@
 %token INTEGER
 %token DOUBLE
 %token PRIMITIVE
-%token VOID "void"
+%token VOID
 %token CHAR_SEQUENCE
 %token STRING
 %token ACCESS_MODIFIER
@@ -69,6 +69,6 @@ int main()
     yyparse();    
 
 	CloseInputFile();
-    
+   
 	return 0;
 }
