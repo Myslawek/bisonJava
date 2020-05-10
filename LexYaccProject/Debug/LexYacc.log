@@ -1,16 +1,6 @@
-﻿  Custom build step: Lex
-  "lekser.l", line 49: warning, rule cannot be matched
-  "lekser.l", line 50: warning, rule cannot be matched
-  "lekser.l", line 51: warning, rule cannot be matched
-  "lekser.l", line 52: warning, rule cannot be matched
-  "lekser.l", line 53: warning, rule cannot be matched
-  "lekser.l", line 54: warning, rule cannot be matched
-  "lekser.l", line 55: warning, rule cannot be matched
-  "lekser.l", line 69: warning, rule cannot be matched
-  "lekser.l", line 70: warning, rule cannot be matched
-  Custom build step: Yacc
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\semestr1\wdk\laboratorium\projekt\bisonjava\lexyaccproject\oparser.c" has not been created. This may cause incremental build to work incorrectly.
-D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\semestr1\wdk\laboratorium\projekt\bisonjava\lexyaccproject\oparser.h" has not been created. This may cause incremental build to work incorrectly.
+﻿  Custom build step: Yacc
+D:\programy\microsoftVisualStudio2019\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\studia\wdk\projekt\lexyaccproject\oparser.c" has not been created. This may cause incremental build to work incorrectly.
+D:\programy\microsoftVisualStudio2019\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(231,5): warning MSB8065: Custom build for item "parser.y" succeeded, but specified output "d:\studia\wdk\projekt\lexyaccproject\oparser.h" has not been created. This may cause incremental build to work incorrectly.
 cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   parser.c
 parser.c(1263,16): warning C4013: 'yylex' undefined; assuming extern returning int
@@ -18,6 +8,7 @@ parser.y(52,14): warning C4013: 'SetInputFile' undefined; assuming extern return
 parser.y(56,16): warning C4013: 'CloseInputFile' undefined; assuming extern returning int
   lekser.c
 lekser.c(1469,47): warning C4013: 'fileno' undefined; assuming extern returning int
-lekser.l(78,16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+lekser.l(78,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
   Generating Code...
-  LexYacc.vcxproj -> D:\Semestr1\WDK\Laboratorium\Projekt\bisonJava\LexYaccProject\Debug\LexYacc.exe
+  LexYacc.vcxproj -> D:\studia\wdk\projekt\LexYaccProject\Debug\LexYacc.exe
