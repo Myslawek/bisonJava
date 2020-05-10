@@ -3,12 +3,20 @@
 %{
 	#include <stdlib.h> 
 	#include "parser.h"
+
+	void SetInputFile(const char* strFileName);
+	void CloseInputFile();
+
+	FILE* pInputFile = NULL;
 %}
-INTEGER [0]|[1-9][0-9]*
-DOUBLE  {INTEGER}"."[0]*{INTEGER}
-PRIMITIVE "int"|"boolean"|"double"|"long"|"char"|"byte"|"short"|"float"
+
+NATURAL_NUMBER [0]|[1-9][0-9]*
+WHOLE_NUMBER "-"?{NATURAL_NUMBER}
+REAL_NUMBER  {WHOLE_NUMBER}"."[0]*{NATURAL_NUMBER}
+WHOLE_NUM_PRIMITIVE "byte"|"char"|"short"|"int"|"long"
+REAL_NUM_PRIMITIVE "float"|"double"
+BOOLEAN "boolean"
 VOID "void"
-CHAR_SEQUENCE [a-zA-Z0-9]*
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
 STRUCTURE "class"|"interface"|"enum"
@@ -16,7 +24,7 @@ CONTROL_FLOW "for"|"while"|"if"|"else"
 NEW "new"
 BOOLEAN_LIT "true"|"false"
 NULL "null"
-ARGS_MATH_OP "+"|"-"|"*"|"\"|"+="|"-="|"*="|"/="
+ARGS_MATH_OP "+"|"-"|"*"|"/"|"+="|"-="|"*="|"/="
 ARG_MATH_OP "++"|"--"
 LOGICAL_OP "&&"|"\|\|"|">"|"=="|"<"|"=>"|"=<"|"!="|"!"
 OPEN_BLOCK "{"
@@ -30,24 +38,26 @@ DOT "."
 COMMA ","
 SEMICOLON ";"
 RETURN "return"
-VARIABLE [a-zA-Z][a-zA-Z0-9]*
-STRUCTURE "class"|"interface"
 ASSIGN "="
+PACKAGE "package"
+VARIABLE [a-zA-Z][a-zA-Z0-9]*
+CHAR_SEQUENCE "\""[a-zA-Z0-9]*"\""
 WHITE_SYMBOL " "|\t|\n
 
 %%
-{INTEGER}   { yylval=atoi(yytext); return INTEGER; }
-{DOUBLE}    { yylval=atoi(yytext); return DOUBLE; }
-{PRIMITIVE} { return PRIMITIVE; }
+{WHOLE_NUMBER}   { return WHOLE_NUMBER; }
+{REAL_NUMBER}    { return REAL_NUMBER; }
+{WHOLE_NUM_PRIMITIVE} { return WHOLE_NUM_PRIMITIVE; } 
+{REAL_NUM_PRIMITIVE}  { return REAL_NUM_PRIMITIVE; }
+{BOOLEAN} { return BOOLEAN; }
 {VOID} { return VOID; }
-{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {STRING} { return STRING; }
 {ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
 {STRUCTURE} { return STRUCTURE; }
 {CONTROL_FLOW} { return CONTROL_FLOW; }
 {NEW} { return NEW; }
 {BOOLEAN_LIT} { return BOOLEAN_LIT; }
-{NULL} { return NULL; }
+{NULL} { return _NULL; }
 {ARG_MATH_OP} { return ARG_MATH_OP; }
 {ARGS_MATH_OP} { return ARGS_MATH_OP; }
 {LOGICAL_OP} { return LOGICAL_OP; }
@@ -62,10 +72,24 @@ WHITE_SYMBOL " "|\t|\n
 {COMMA} { return COMMA; }
 {SEMICOLON} { return SEMICOLON; }
 {RETURN} { return RETURN; }
+{ASSIGN} { return ASSIGN; }
+{PACKAGE} { return PACKAGE; }
+{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {VARIABLE} { return VARIABLE; }
-{STRUCTURE} { return STRUCTURE; }
-{ASSIGN} { return ASSIGN; };
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
-. { return ERROR; };
-[\n]    return ENDL;
+. { printf("Nieobslugiwany token\n"); return ERROR; };
 %%
+
+void SetInputFile(const char* strFileName){
+	if(strFileName){
+		pInputFile = fopen(strFileName, "r");
+		yyin = pInputFile;
+	}
+}
+
+void CloseInputFile(){
+	if(pInputFile){
+		fclose(pInputFile);
+		pInputFile = NULL;
+	}
+}
