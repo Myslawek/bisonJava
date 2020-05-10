@@ -35,16 +35,17 @@
 %token VARIABLE
 %token ASSIGN
 %token WHITE_SYMBOL
+%token PACKAGE
 %token ERROR
 %%
 
-program: program instruction {printf("Poprawny kod");}
+program: program package_def SEMICOLON ws instruction {printf("Poprawny kod");}
 |
 ;
 
 instruction: declaration SEMICOLON 
 | declaration ws SEMICOLON 
-| definition SEMICOLON
+| definition SEMICOLON 
 | definition ws SEMICOLON 
 ;
 
@@ -56,6 +57,10 @@ definition: WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER
 | REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
 | REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
 | BOOLEAN var_assign BOOLEAN_LIT 
+;
+
+package_def: PACKAGE ws VARIABLE
+| package_def DOT VARIABLE
 ;
 
 var_assign: ws VARIABLE ws ASSIGN ws

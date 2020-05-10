@@ -39,6 +39,7 @@ COMMA ","
 SEMICOLON ";"
 RETURN "return"
 ASSIGN "="
+PACKAGE "package"
 VARIABLE [a-zA-Z][a-zA-Z0-9]*
 CHAR_SEQUENCE "\""[a-zA-Z0-9]*"\""
 WHITE_SYMBOL " "|\t|\n
@@ -72,10 +73,11 @@ WHITE_SYMBOL " "|\t|\n
 {SEMICOLON} { return SEMICOLON; }
 {RETURN} { return RETURN; }
 {ASSIGN} { return ASSIGN; }
+{PACKAGE} { return PACKAGE; }
 {CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
-. { printf("none\n"); return ERROR; };
+. { printf("Nieobslugiwany token\n"); return ERROR; };
 %%
 
 void SetInputFile(const char* strFileName){
