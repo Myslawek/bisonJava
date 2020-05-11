@@ -39,8 +39,24 @@
 %token ERROR
 %%
 
-program: program package_def SEMICOLON ws instruction {printf("Poprawny kod");}
+program: program package_def SEMICOLON ws main {printf("Poprawny kod");}
+| program package_def SEMICOLON ws main ws {printf("Poprawny kod");}
 |
+;
+
+main: MAIN_METHOD ws method 
+| MAIN_METHOD method
+;
+
+method: OPEN_BLOCK block CLOSE_BLOCK 
+| OPEN_BLOCK ws block CLOSE_BLOCK 
+| OPEN_BLOCK block ws CLOSE_BLOCK 
+| OPEN_BLOCK ws block ws CLOSE_BLOCK
+;
+
+block: block instruction 
+| block ws instruction
+| instruction
 ;
 
 instruction: declaration SEMICOLON 
@@ -50,23 +66,33 @@ instruction: declaration SEMICOLON
 ;
 
 declaration: assignable_primitive ws VARIABLE  
-| assignable_primitive ws VARIABLE ws 
+| ws assignable_primitive ws VARIABLE
 ;
 
 definition: WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
 | REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
 | REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
 | BOOLEAN var_assign BOOLEAN_LIT 
+| ws WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
+| ws REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
+| ws REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
+| ws BOOLEAN var_assign BOOLEAN_LIT 
+| WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
+| REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
+| REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
+| BOOLEAN var_assign ws BOOLEAN_LIT 
+| ws WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
+| ws REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
+| ws REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
+| ws BOOLEAN var_assign ws BOOLEAN_LIT 
 ;
 
 package_def: PACKAGE ws VARIABLE
 | package_def DOT VARIABLE
 ;
 
-var_assign: ws VARIABLE ws ASSIGN ws
-| ws VARIABLE ws ASSIGN 
+var_assign: ws VARIABLE ws ASSIGN
 | ws VARIABLE ASSIGN
-| ws VARIABLE ASSIGN ws
 ;
 
 assignable_primitive: WHOLE_NUM_PRIMITIVE 
