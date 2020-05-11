@@ -65,7 +65,7 @@ instruction: declaration SEMICOLON
 | definition ws SEMICOLON 
 ;
 
-declaration: assignable_primitive ws VARIABLE  
+declaration: assignable_primitive ws VARIABLE
 | ws assignable_primitive ws VARIABLE
 ;
 
