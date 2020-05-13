@@ -39,60 +39,39 @@
 %token ERROR
 %%
 
-program: program package_def SEMICOLON ws main {printf("Poprawny kod");}
-| program package_def SEMICOLON ws main ws {printf("Poprawny kod");}
+
+program: program ws_opt package_def main ws_opt {printf("Poprawny kod");}
 |
 ;
 
-main: MAIN_METHOD ws method 
-| MAIN_METHOD method
+main: MAIN_METHOD ws_opt method 
 ;
 
-method: OPEN_BLOCK block CLOSE_BLOCK 
-| OPEN_BLOCK ws block CLOSE_BLOCK 
-| OPEN_BLOCK block ws CLOSE_BLOCK 
-| OPEN_BLOCK ws block ws CLOSE_BLOCK
+method: OPEN_BLOCK ws_opt block ws_opt CLOSE_BLOCK 
 ;
 
-block: block instruction 
-| block ws instruction
-| instruction
+block: block ws_opt instruction 
+|
 ;
 
-instruction: declaration SEMICOLON 
-| declaration ws SEMICOLON 
-| definition SEMICOLON 
-| definition ws SEMICOLON 
+instruction: declaration ws_opt SEMICOLON
+
 ;
 
 declaration: assignable_primitive ws VARIABLE
-| ws assignable_primitive ws VARIABLE
 ;
 
-definition: WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
-| REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
-| REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
-| BOOLEAN var_assign BOOLEAN_LIT 
-| ws WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
-| ws REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
-| ws REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
-| ws BOOLEAN var_assign BOOLEAN_LIT 
-| WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
-| REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
-| REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
-| BOOLEAN var_assign ws BOOLEAN_LIT 
-| ws WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
-| ws REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
-| ws REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
-| ws BOOLEAN var_assign ws BOOLEAN_LIT 
+definition: WHOLE_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER 
+| REAL_NUM_PRIMITIVE var_assign ws_opt REAL_NUMBER
+| REAL_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER
+| BOOLEAN var_assign ws_opt BOOLEAN_LIT 
 ;
 
-package_def: PACKAGE ws VARIABLE
-| package_def DOT VARIABLE
+package_def: package_def PACKAGE ws var ws_opt SEMICOLON ws_opt
+|
 ;
 
-var_assign: ws VARIABLE ws ASSIGN
-| ws VARIABLE ASSIGN
+var_assign: ws VARIABLE ws_opt ASSIGN
 ;
 
 assignable_primitive: WHOLE_NUM_PRIMITIVE 
@@ -100,8 +79,15 @@ assignable_primitive: WHOLE_NUM_PRIMITIVE
 | BOOLEAN
 ;
 
+var: VARIABLE
+| var DOT VARIABLE
+
 ws: ws WHITE_SYMBOL
 | WHITE_SYMBOL
+;
+
+ws_opt: ws
+|
 ;
 
 %%
