@@ -13,6 +13,7 @@
 %token CHAR_SEQUENCE
 %token STRING
 %token ACCESS_MODIFIER
+%token STATIC
 %token STRUCTURE
 %token CONTROL_FLOW
 %token NEW
@@ -37,10 +38,12 @@
 %token WHITE_SYMBOL
 %token PACKAGE
 %token ERROR
+%token IMPORT
+%token END_OF_IMPORT
 %%
 
 
-program: program ws_opt package_def main ws_opt {printf("Poprawny kod");}
+program: program ws_opt package_def import main ws_opt {printf("Poprawny kod");}
 |
 ;
 
@@ -55,7 +58,7 @@ block: block ws_opt instruction
 ;
 
 instruction: declaration ws_opt SEMICOLON
-
+| definition ws_opt SEMICOLON 
 ;
 
 declaration: assignable_primitive ws VARIABLE
@@ -77,6 +80,18 @@ var_assign: ws VARIABLE ws_opt ASSIGN
 assignable_primitive: WHOLE_NUM_PRIMITIVE 
 | REAL_NUM_PRIMITIVE 
 | BOOLEAN
+;
+
+import: import IMPORT ws static var end_of_import ws_opt SEMICOLON ws_opt
+|
+;
+
+static: STATIC ws
+|
+;
+
+end_of_import: END_OF_IMPORT
+|
 ;
 
 var: VARIABLE
