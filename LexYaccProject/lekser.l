@@ -10,6 +10,8 @@
 	FILE* pInputFile = NULL;
 %}
 
+IMPORT "import"
+END_OF_IMPORT ".*"
 NATURAL_NUMBER [0]|[1-9][0-9]*
 WHOLE_NUMBER "-"?{NATURAL_NUMBER}
 REAL_NUMBER  {WHOLE_NUMBER}"."[0]*{NATURAL_NUMBER}
@@ -19,6 +21,7 @@ BOOLEAN "boolean"
 VOID "void"
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
+STATIC "static"
 STRUCTURE "class"|"interface"|"enum"
 CONTROL_FLOW "for"|"while"|"if"|"else"
 NEW "new"
@@ -33,7 +36,7 @@ OPEN_SQUARE "["
 CLOSE_SQUARE "]"
 OPEN_ROUND "("
 CLOSE_ROUND ")"
-MAIN_METHOD "public static void main(String"("..."|"[]")[a-zA-Z]+[a-zA-Z0-9]*")"
+MAIN_METHOD "public"{WHITE_SYMBOL}+{STATIC}{WHITE_SYMBOL}+{VOID}{WHITE_SYMBOL}+"main("{STRING}("..."|"[]"){WHITE_SYMBOL}+{VARIABLE}")"
 DOT "."
 COMMA ","
 SEMICOLON ";"
@@ -52,6 +55,7 @@ WHITE_SYMBOL " "|\t|\n
 {BOOLEAN} { return BOOLEAN; }
 {VOID} { return VOID; }
 {STRING} { return STRING; }
+{STATIC} { return STATIC; }
 {ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
 {STRUCTURE} { return STRUCTURE; }
 {CONTROL_FLOW} { return CONTROL_FLOW; }
@@ -75,6 +79,8 @@ WHITE_SYMBOL " "|\t|\n
 {ASSIGN} { return ASSIGN; }
 {PACKAGE} { return PACKAGE; }
 {CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
+{IMPORT} { return IMPORT; }
+{END_OF_IMPORT} {return END_OF_IMPORT; }
 {VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
 . { printf("Nieobslugiwany token\n"); return ERROR; };
