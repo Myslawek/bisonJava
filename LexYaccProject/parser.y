@@ -40,6 +40,11 @@
 %token ERROR
 %token IMPORT
 %token DOT_STAR
+%token FOR_LOOP
+%token WHILE_LOOP
+%token IF_COND
+%token ELSE_IF_COND
+%token ELSE_COND
 %%
 
 

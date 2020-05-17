@@ -23,7 +23,11 @@ STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
 STATIC "static"
 STRUCTURE "class"|"interface"|"enum"
-CONTROL_FLOW "for"|"while"|"if"|"else"
+IF_COND "if"
+ELSE_IF_COND "else if"
+ELSE_COND "else"
+FOR_LOOP "for"
+WHILE_LOOP "while"
 NEW "new"
 BOOLEAN_VAL "true"|"false"
 NULL "null"
@@ -58,7 +62,11 @@ WHITE_SYMBOL " "|\t|\n
 {STATIC} { return STATIC; }
 {ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
 {STRUCTURE} { return STRUCTURE; }
-{CONTROL_FLOW} { return CONTROL_FLOW; }
+{IF_COND} { return IF_COND; }
+{ELSE_IF_COND} { return ELSE_IF_COND; }
+{ELSE_COND} { return ELSE_COND; }
+{FOR_LOOP} { return FOR_LOOP; }
+{WHILE_LOOP} { return WHILE_LOOP; }
 {NEW} { return NEW; }
 {BOOLEAN_VAL} { return BOOLEAN_VAL; }
 {NULL} { return _NULL; }
