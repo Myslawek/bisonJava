@@ -8,7 +8,7 @@
 %token REAL_NUMBER
 %token WHOLE_NUM_PRIMITIVE
 %token REAL_NUM_PRIMITIVE
-%token BOOLEAN
+%token BOOLEAN_PRIMITIVE
 %token VOID
 %token CHAR_SEQUENCE
 %token STRING
@@ -17,7 +17,7 @@
 %token STRUCTURE
 %token CONTROL_FLOW
 %token NEW
-%token BOOLEAN_LIT
+%token BOOLEAN_VAL
 %token _NULL
 %token ARGS_MATH_OP
 %token ARG_MATH_OP
@@ -39,7 +39,7 @@
 %token PACKAGE
 %token ERROR
 %token IMPORT
-%token END_OF_IMPORT
+%token IMPORT_ALL_STATIC_MEMBERS
 %%
 
 
@@ -67,7 +67,7 @@ declaration: assignable_primitive ws VARIABLE
 definition: WHOLE_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER 
 | REAL_NUM_PRIMITIVE var_assign ws_opt REAL_NUMBER
 | REAL_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER
-| BOOLEAN var_assign ws_opt BOOLEAN_LIT 
+| BOOLEAN_PRIMITIVE var_assign ws_opt BOOLEAN_VAL 
 ;
 
 package_def: package_def PACKAGE ws var ws_opt SEMICOLON ws_opt
