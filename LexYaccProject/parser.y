@@ -52,10 +52,22 @@ program: program ws_opt package_def_opt ws_opt imports ws_opt main ws_opt {print
 |
 ;
 
-main: MAIN_METHOD ws_opt method 
+main: MAIN_METHOD ws_opt instruction_block 
 ;
 
-method: OPEN_BLOCK ws_opt block ws_opt CLOSE_BLOCK 
+if_cond: IF_COND ws_opt OPEN_ROUND ws_opt conditions ws_opt CLOSE_ROUND instruction_block
+;
+
+conditions: conditions ws_opt LOGICAL_OP ws_opt condition 
+| condition
+;
+
+condition: WHOLE_NUMBER ws_opt LOGICAL_OP ws_opt WHOLE_NUMBER 
+| REAL_NUMBER ws_opt LOGICAL_OP ws_opt REAL_NUMBER 
+| BOOLEAN_VAL
+;
+
+instruction_block: OPEN_BLOCK ws_opt block ws_opt CLOSE_BLOCK 
 ;
 
 block: block ws_opt instruction | ws_opt
