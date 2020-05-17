@@ -39,7 +39,7 @@
 %token PACKAGE
 %token ERROR
 %token IMPORT
-%token IMPORT_ALL_STATIC_MEMBERS
+%token DOT_STAR
 %%
 
 
@@ -84,7 +84,9 @@ imports: imports ws import
 | import 
 ;
 
-import: IMPORT ws path ws_opt SEMICOLON
+import: IMPORT ws path ws_opt SEMICOLON 
+| IMPORT ws STATIC ws path ws_opt SEMICOLON
+| IMPORT ws STATIC ws path DOT_STAR ws_opt SEMICOLON
 ;
 
 static_opt: STATIC | ws_opt

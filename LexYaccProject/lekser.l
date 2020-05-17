@@ -11,7 +11,7 @@
 %}
 
 IMPORT "import"
-IMPORT_ALL_STATIC_MEMBERS ".*"
+DOT_STAR ".*"
 NATURAL_NUMBER [0]|[1-9][0-9]*
 WHOLE_NUMBER "-"?{NATURAL_NUMBER}
 REAL_NUMBER  {WHOLE_NUMBER}"."[0]*{NATURAL_NUMBER}
@@ -80,7 +80,7 @@ WHITE_SYMBOL " "|\t|\n
 {PACKAGE} { return PACKAGE; }
 {CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {IMPORT} { return IMPORT; }
-{IMPORT_ALL_STATIC_MEMBERS} {return IMPORT_ALL_STATIC_MEMBERS; }
+{DOT_STAR} {return DOT_STAR; }
 {VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
 . { printf("Nieobslugiwany token\n"); return ERROR; };
