@@ -8,7 +8,7 @@
 %token REAL_NUMBER
 %token WHOLE_NUM_PRIMITIVE
 %token REAL_NUM_PRIMITIVE
-%token BOOLEAN
+%token BOOLEAN_PRIMITIVE
 %token VOID
 %token CHAR_SEQUENCE
 %token STRING
@@ -17,7 +17,7 @@
 %token STRUCTURE
 %token CONTROL_FLOW
 %token NEW
-%token BOOLEAN_LIT
+%token BOOLEAN_VAL
 %token _NULL
 %token ARGS_MATH_OP
 %token ARG_MATH_OP
@@ -39,11 +39,11 @@
 %token PACKAGE
 %token ERROR
 %token IMPORT
-%token END_OF_IMPORT
+%token DOT_STAR
 %%
 
 
-program: program ws_opt package_def import main ws_opt {printf("Poprawny kod");}
+program: program ws_opt package_def_opt ws_opt imports ws_opt main ws_opt {printf("Poprawny kod");}
 |
 ;
 
@@ -53,56 +53,53 @@ main: MAIN_METHOD ws_opt method
 method: OPEN_BLOCK ws_opt block ws_opt CLOSE_BLOCK 
 ;
 
-block: block ws_opt instruction 
-|
+block: block ws_opt instruction | ws_opt
 ;
 
 instruction: declaration ws_opt SEMICOLON
 | definition ws_opt SEMICOLON 
 ;
 
-declaration: assignable_primitive ws VARIABLE
+declaration: WHOLE_NUM_PRIMITIVE ws VARIABLE 
+| REAL_NUM_PRIMITIVE ws VARIABLE 
+| BOOLEAN_PRIMITIVE ws VARIABLE
 ;
 
 definition: WHOLE_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER 
 | REAL_NUM_PRIMITIVE var_assign ws_opt REAL_NUMBER
 | REAL_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER
-| BOOLEAN var_assign ws_opt BOOLEAN_LIT 
+| BOOLEAN_PRIMITIVE var_assign ws_opt BOOLEAN_VAL 
 ;
 
-package_def: package_def PACKAGE ws var ws_opt SEMICOLON ws_opt
-|
+package_def_opt: PACKAGE ws path ws_opt SEMICOLON | ws_opt
 ;
 
 var_assign: ws VARIABLE ws_opt ASSIGN
 ;
 
-assignable_primitive: WHOLE_NUM_PRIMITIVE 
-| REAL_NUM_PRIMITIVE 
-| BOOLEAN
+imports_opt: imports | ws_opt
 ;
 
-import: import IMPORT ws static var end_of_import ws_opt SEMICOLON ws_opt
-|
+imports: imports ws import
+| import 
 ;
 
-static: STATIC ws
-|
+import: IMPORT ws path ws_opt SEMICOLON 
+| IMPORT ws STATIC ws path ws_opt SEMICOLON
+| IMPORT ws STATIC ws path DOT_STAR ws_opt SEMICOLON
 ;
 
-end_of_import: END_OF_IMPORT
-|
+static_opt: STATIC | ws_opt
 ;
 
-var: VARIABLE
-| var DOT VARIABLE
+path: VARIABLE
+| path DOT VARIABLE
 
 ws: ws WHITE_SYMBOL
 | WHITE_SYMBOL
 ;
 
-ws_opt: ws
-|
+ws_opt: | ws
 ;
 
 %%

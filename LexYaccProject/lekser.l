@@ -11,13 +11,13 @@
 %}
 
 IMPORT "import"
-END_OF_IMPORT ".*"
+DOT_STAR ".*"
 NATURAL_NUMBER [0]|[1-9][0-9]*
 WHOLE_NUMBER "-"?{NATURAL_NUMBER}
 REAL_NUMBER  {WHOLE_NUMBER}"."[0]*{NATURAL_NUMBER}
 WHOLE_NUM_PRIMITIVE "byte"|"char"|"short"|"int"|"long"
 REAL_NUM_PRIMITIVE "float"|"double"
-BOOLEAN "boolean"
+BOOLEAN_PRIMITIVE "boolean"
 VOID "void"
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
@@ -25,7 +25,7 @@ STATIC "static"
 STRUCTURE "class"|"interface"|"enum"
 CONTROL_FLOW "for"|"while"|"if"|"else"
 NEW "new"
-BOOLEAN_LIT "true"|"false"
+BOOLEAN_VAL "true"|"false"
 NULL "null"
 ARGS_MATH_OP "+"|"-"|"*"|"/"|"+="|"-="|"*="|"/="
 ARG_MATH_OP "++"|"--"
@@ -52,7 +52,7 @@ WHITE_SYMBOL " "|\t|\n
 {REAL_NUMBER}    { return REAL_NUMBER; }
 {WHOLE_NUM_PRIMITIVE} { return WHOLE_NUM_PRIMITIVE; } 
 {REAL_NUM_PRIMITIVE}  { return REAL_NUM_PRIMITIVE; }
-{BOOLEAN} { return BOOLEAN; }
+{BOOLEAN_PRIMITIVE} { return BOOLEAN_PRIMITIVE; }
 {VOID} { return VOID; }
 {STRING} { return STRING; }
 {STATIC} { return STATIC; }
@@ -60,7 +60,7 @@ WHITE_SYMBOL " "|\t|\n
 {STRUCTURE} { return STRUCTURE; }
 {CONTROL_FLOW} { return CONTROL_FLOW; }
 {NEW} { return NEW; }
-{BOOLEAN_LIT} { return BOOLEAN_LIT; }
+{BOOLEAN_VAL} { return BOOLEAN_VAL; }
 {NULL} { return _NULL; }
 {ARG_MATH_OP} { return ARG_MATH_OP; }
 {ARGS_MATH_OP} { return ARGS_MATH_OP; }
@@ -80,7 +80,7 @@ WHITE_SYMBOL " "|\t|\n
 {PACKAGE} { return PACKAGE; }
 {CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
 {IMPORT} { return IMPORT; }
-{END_OF_IMPORT} {return END_OF_IMPORT; }
+{DOT_STAR} {return DOT_STAR; }
 {VARIABLE} { return VARIABLE; }
 {WHITE_SYMBOL} { return WHITE_SYMBOL; }
 . { printf("Nieobslugiwany token\n"); return ERROR; };
