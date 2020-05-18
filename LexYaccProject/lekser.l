@@ -22,7 +22,8 @@ VOID "void"
 STRING "String"
 ACCESS_MODIFIER "public"|"private"|"protected"
 STATIC "static"
-STRUCTURE "class"|"interface"|"enum"
+STRUCTURE "interface"|"enum"
+CLASS "class"
 IF_COND "if"
 ELSE_IF_COND "else if"
 ELSE_COND "else"
@@ -52,45 +53,46 @@ CHAR_SEQUENCE "\""[a-zA-Z0-9]*"\""
 WHITE_SYMBOL " "|\t|\n
 
 %%
-{WHOLE_NUMBER}   { return WHOLE_NUMBER; }
-{REAL_NUMBER}    { return REAL_NUMBER; }
-{WHOLE_NUM_PRIMITIVE} { return WHOLE_NUM_PRIMITIVE; } 
-{REAL_NUM_PRIMITIVE}  { return REAL_NUM_PRIMITIVE; }
-{BOOLEAN_PRIMITIVE} { return BOOLEAN_PRIMITIVE; }
-{VOID} { return VOID; }
-{STRING} { return STRING; }
-{STATIC} { return STATIC; }
-{ACCESS_MODIFIER} { return ACCESS_MODIFIER; }
-{STRUCTURE} { return STRUCTURE; }
-{IF_COND} { return IF_COND; }
-{ELSE_IF_COND} { return ELSE_IF_COND; }
-{ELSE_COND} { return ELSE_COND; }
-{FOR_LOOP} { return FOR_LOOP; }
-{WHILE_LOOP} { return WHILE_LOOP; }
-{NEW} { return NEW; }
-{BOOLEAN_VAL} { return BOOLEAN_VAL; }
-{NULL} { return _NULL; }
-{ARG_MATH_OP} { return ARG_MATH_OP; }
-{ARGS_MATH_OP} { return ARGS_MATH_OP; }
-{LOGICAL_OP} { return LOGICAL_OP; }
-{OPEN_BLOCK} { return OPEN_BLOCK; }
-{CLOSE_BLOCK} { return CLOSE_BLOCK; }
-{OPEN_SQUARE} { return OPEN_SQUARE; }
-{CLOSE_SQUARE} { return CLOSE_SQUARE; }
-{OPEN_ROUND} { return OPEN_ROUND; }
-{CLOSE_ROUND} { return CLOSE_ROUND; }
-{MAIN_METHOD} { return MAIN_METHOD; }
-{DOT} { return DOT; }
-{COMMA} { return COMMA; }
-{SEMICOLON} { return SEMICOLON; }
-{RETURN} { return RETURN; }
-{ASSIGN} { return ASSIGN; }
-{PACKAGE} { return PACKAGE; }
-{CHAR_SEQUENCE} { return CHAR_SEQUENCE; }
-{IMPORT} { return IMPORT; }
-{DOT_STAR} {return DOT_STAR; }
-{VARIABLE} { return VARIABLE; }
-{WHITE_SYMBOL} { return WHITE_SYMBOL; }
+{WHOLE_NUMBER}   { printf("WHOLE_NUMBER\n"); return WHOLE_NUMBER; }
+{REAL_NUMBER}    { printf("REAL_NUMBER\n"); return REAL_NUMBER; }
+{WHOLE_NUM_PRIMITIVE} { printf("WHOLE_NUM_PRIMITIVE\n"); return WHOLE_NUM_PRIMITIVE; } 
+{REAL_NUM_PRIMITIVE}  { printf("REAL_NUM_PRIMITIVE\n"); return REAL_NUM_PRIMITIVE; }
+{BOOLEAN_PRIMITIVE} { printf("BOOLEAN_PRIMITIVE\n"); return BOOLEAN_PRIMITIVE; }
+{VOID} { printf("VOID\n"); return VOID; }
+{STRING} { printf("STRING\n"); return STRING; }
+{STATIC} { printf("STATIC\n"); return STATIC; }
+{ACCESS_MODIFIER} { printf("ACCESS_MODIFIER\n"); return ACCESS_MODIFIER; }
+{STRUCTURE} { printf("STRUCTURE\n"); return STRUCTURE; }
+{IF_COND} { printf("IF_COND\n"); return IF_COND; }
+{ELSE_IF_COND} { printf("ELSE_IF_COND\n"); return ELSE_IF_COND; }
+{ELSE_COND} { printf("ELSE_COND\n"); return ELSE_COND; }
+{FOR_LOOP} { printf("FOR_LOOP\n"); return FOR_LOOP; }
+{WHILE_LOOP} { printf("WHILE_LOOP\n"); return WHILE_LOOP; }
+{NEW} { printf("NEW\n"); return NEW; }
+{BOOLEAN_VAL} { printf("BOOLEAN_VAL\n"); return BOOLEAN_VAL; }
+{NULL} { printf("NULL\n"); return _NULL; }
+{ARG_MATH_OP} { printf("ARG_MATH_OP\n"); return ARG_MATH_OP; }
+{ARGS_MATH_OP} { printf("ARGS_MATH_OP\n"); return ARGS_MATH_OP; }
+{LOGICAL_OP} { printf("LOGICAL_OP\n"); return LOGICAL_OP; }
+{OPEN_BLOCK} { printf("OPEN_BLOCK\n"); return OPEN_BLOCK; }
+{CLOSE_BLOCK} { printf("CLOSE_BLOCK\n"); return CLOSE_BLOCK; }
+{OPEN_SQUARE} { printf("OPEN_SQUARE\n"); return OPEN_SQUARE; }
+{CLOSE_SQUARE} { printf("CLOSE_SQUARE\n"); return CLOSE_SQUARE; }
+{OPEN_ROUND} { printf("OPEN_ROUND\n"); return OPEN_ROUND; }
+{CLOSE_ROUND} { printf("CLOSE_ROUND\n"); return CLOSE_ROUND; }
+{MAIN_METHOD} { printf("MAIN_METHOD\n"); return MAIN_METHOD; }
+{DOT} { printf("DOT\n"); return DOT; }
+{COMMA} { printf("COMMA\n"); return COMMA; }
+{SEMICOLON} { printf("SEMICOLON\n"); return SEMICOLON; }
+{RETURN} { printf("RETURN\n"); return RETURN; }
+{ASSIGN} { printf("ASSIGN\n"); return ASSIGN; }
+{PACKAGE} { printf("PACKAGE\n"); return PACKAGE; }
+{CHAR_SEQUENCE} { printf("CHAR_SEQUENCE\n"); return CHAR_SEQUENCE; }
+{IMPORT} { printf("IMPORT\n"); return IMPORT; }
+{CLASS} { printf("CLASS\n"); return CLASS; }
+{DOT_STAR} { printf("DOT_STAR\n"); return DOT_STAR; }
+{VARIABLE} { printf("VARIABLE\n"); return VARIABLE; }
+{WHITE_SYMBOL} { printf("WHITE_SYMBOL\n"); return WHITE_SYMBOL; }
 . { printf("Nieobslugiwany token\n"); return ERROR; };
 %%
 
