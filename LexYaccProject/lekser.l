@@ -35,16 +35,11 @@ NULL "null"
 ARGS_MATH_OP "+"|"-"|"*"|"/"|"+="|"-="|"*="|"/="
 ARG_MATH_OP "++"|"--"
 LOGICAL_OP "&&"|"\|\|"|">"|"=="|"<"|"=>"|"=<"|"!="|"!"
-OPEN_BLOCK "{"
-CLOSE_BLOCK "}"
 OPEN_SQUARE "["
 CLOSE_SQUARE "]"
-OPEN_ROUND "("
-CLOSE_ROUND ")"
 MAIN_METHOD "public"{WHITE_SYMBOL}+{STATIC}{WHITE_SYMBOL}+{VOID}{WHITE_SYMBOL}+"main("{STRING}("..."|"[]"){WHITE_SYMBOL}+{VARIABLE}")"
 DOT "."
 COMMA ","
-SEMICOLON ";"
 RETURN "return"
 ASSIGN "="
 PACKAGE "package"
@@ -74,16 +69,11 @@ WHITE_SYMBOL " "|\t|\n
 {ARG_MATH_OP} { printf("ARG_MATH_OP\n"); return ARG_MATH_OP; }
 {ARGS_MATH_OP} { printf("ARGS_MATH_OP\n"); return ARGS_MATH_OP; }
 {LOGICAL_OP} { printf("LOGICAL_OP\n"); return LOGICAL_OP; }
-{OPEN_BLOCK} { printf("OPEN_BLOCK\n"); return OPEN_BLOCK; }
-{CLOSE_BLOCK} { printf("CLOSE_BLOCK\n"); return CLOSE_BLOCK; }
 {OPEN_SQUARE} { printf("OPEN_SQUARE\n"); return OPEN_SQUARE; }
 {CLOSE_SQUARE} { printf("CLOSE_SQUARE\n"); return CLOSE_SQUARE; }
-{OPEN_ROUND} { printf("OPEN_ROUND\n"); return OPEN_ROUND; }
-{CLOSE_ROUND} { printf("CLOSE_ROUND\n"); return CLOSE_ROUND; }
 {MAIN_METHOD} { printf("MAIN_METHOD\n"); return MAIN_METHOD; }
 {DOT} { printf("DOT\n"); return DOT; }
 {COMMA} { printf("COMMA\n"); return COMMA; }
-{SEMICOLON} { printf("SEMICOLON\n"); return SEMICOLON; }
 {RETURN} { printf("RETURN\n"); return RETURN; }
 {ASSIGN} { printf("ASSIGN\n"); return ASSIGN; }
 {PACKAGE} { printf("PACKAGE\n"); return PACKAGE; }
@@ -93,6 +83,11 @@ WHITE_SYMBOL " "|\t|\n
 {DOT_STAR} { printf("DOT_STAR\n"); return DOT_STAR; }
 {VARIABLE} { printf("VARIABLE\n"); return VARIABLE; }
 {WHITE_SYMBOL} { printf("WHITE_SYMBOL\n"); return WHITE_SYMBOL; }
+"(" { printf("OPEN_ROUND\n"); return yytext[0]; }
+")" { printf("CLOSE_ROUND\n"); return yytext[0]; }
+"{" { printf("OPEN_BLOCK\n"); return yytext[0]; }
+"}" { printf("CLOSE_BLOCK\n"); return yytext[0]; }
+";" { printf("SEMICOLON\n"); return yytext[0]; }
 . { printf("Nieobslugiwany token\n"); return ERROR; };
 %%
 

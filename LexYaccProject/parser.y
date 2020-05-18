@@ -22,16 +22,11 @@
 %token ARGS_MATH_OP
 %token ARG_MATH_OP
 %token LOGICAL_OP
-%token OPEN_BLOCK
-%token CLOSE_BLOCK
 %token OPEN_SQUARE
 %token CLOSE_SQUARE
-%token OPEN_ROUND
-%token CLOSE_ROUND
 %token MAIN_METHOD
 %token DOT
 %token COMMA
-%token SEMICOLON
 %token RETURN
 %token VARIABLE
 %token ASSIGN
@@ -45,6 +40,7 @@
 %token IF_COND
 %token ELSE_IF_COND
 %token ELSE_COND
+%token CLASS
 %%
 
 
@@ -52,10 +48,16 @@ program: program ws_opt package_def_opt ws_opt imports ws_opt main ws_opt {print
 |
 ;
 
+class: ACCESS_MODIFIER ws CLASS ws VARIABLE ws_opt '{' ws_opt declarations_definitions ws_opt 
+;
+
+method: ACCESS_MODIFIER WHOLE_NUM_PRIMITIVE
+| ACCESS_MODIFIER REAL_NUM_PRIMITIVE
+;
 main: MAIN_METHOD ws_opt instruction_block 
 ;
 
-if_cond: IF_COND ws_opt OPEN_ROUND ws_opt conditions ws_opt CLOSE_ROUND instruction_block
+if_cond: IF_COND ws_opt '(' ws_opt conditions ws_opt ')' instruction_block
 ;
 
 conditions: conditions ws_opt LOGICAL_OP ws_opt condition 
@@ -67,15 +69,22 @@ condition: WHOLE_NUMBER ws_opt LOGICAL_OP ws_opt WHOLE_NUMBER
 | BOOLEAN_VAL
 ;
 
-instruction_block: OPEN_BLOCK ws_opt block ws_opt CLOSE_BLOCK 
+instruction_block: '{' ws_opt block ws_opt '}'
 ;
 
-block: block ws_opt instruction | ws_opt
+block: block ws_opt declarations_definitions | ws_opt
 ;
 
-instruction: declaration ws_opt SEMICOLON
-| definition ws_opt SEMICOLON 
+declarations_definitions: declaration ws_opt ';'
+| definition ws_opt ';' 
 ;
+
+declarations_with_definitions: declarations_with_definitions declaration 
+| declarations_with_definitions definition
+| declaration
+| definition
+;
+
 
 declaration: WHOLE_NUM_PRIMITIVE ws VARIABLE 
 | REAL_NUM_PRIMITIVE ws VARIABLE 
@@ -88,7 +97,7 @@ definition: WHOLE_NUM_PRIMITIVE var_assign ws_opt WHOLE_NUMBER
 | BOOLEAN_PRIMITIVE var_assign ws_opt BOOLEAN_VAL 
 ;
 
-package_def_opt: PACKAGE ws path ws_opt SEMICOLON | ws_opt
+package_def_opt: PACKAGE ws path ws_opt ';' | ws_opt
 ;
 
 var_assign: ws VARIABLE ws_opt ASSIGN
@@ -101,9 +110,9 @@ imports: imports ws import
 | import 
 ;
 
-import: IMPORT ws path ws_opt SEMICOLON 
-| IMPORT ws STATIC ws path ws_opt SEMICOLON
-| IMPORT ws STATIC ws path DOT_STAR ws_opt SEMICOLON
+import: IMPORT ws path ws_opt ';' 
+| IMPORT ws STATIC ws path ws_opt ';'
+| IMPORT ws STATIC ws path DOT_STAR ws_opt ';'
 ;
 
 static_opt: STATIC | ws_opt
