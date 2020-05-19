@@ -2,7 +2,12 @@
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <math.h>
+	#include <stdbool.h>
+
 	void yyerror(char *s);
+
+	char* strClassName;
+	bool czyPoprawny = true;
 %}
 
 %token PACKAGE
@@ -61,13 +66,34 @@
 
 %%
 
-compilation_unit: type_declaration													{printf("Poprawny kod");}
-|  package_statement 																{printf("Poprawny kod");}
-|  import_statement 																{printf("Poprawny kod");}
-|  import_statement type_declaration												{printf("Poprawny kod");}
-|  package_statement type_declaration												{printf("Poprawny kod");}
-|  package_statement import_statement												{printf("Poprawny kod");}
-|  package_statement import_statement type_declaration								{printf("Poprawny kod");}
+compilation_unit: type_declaration													{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  package_statement 																{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  import_statement 																{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  import_statement type_declaration												{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  package_statement type_declaration												{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  package_statement import_statement												{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
+|  package_statement import_statement type_declaration								{
+																						if(czyPoprawny)
+																							printf("Poprawny kod");
+																					}
 |  
 ;
 
@@ -96,15 +122,17 @@ type_declaration: class_declaration
 | interface_declaration
 |
 
-class_declaration: modifier CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
-| CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier CLASS IDENTIFIER '{' method_field_declaration '}'
-| CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
-| CLASS IDENTIFIER '{' method_field_declaration '}'
+class_declaration: modifier class_identifier EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'								
+| class_identifier EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier class_identifier IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier class_identifier EXTENDS class_name '{' method_field_declaration '}'
+| class_identifier IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier class_identifier '{' method_field_declaration '}'
+| class_identifier EXTENDS class_name '{' method_field_declaration '}'
+| class_identifier '{' method_field_declaration '}'
 
+class_identifier: CLASS IDENTIFIER																					{strClassName = $2;}
+;
 
 class_interface_names: interface_name ',' interface_name
 | interface_name
@@ -245,10 +273,30 @@ __switch_statement1: CASE expression ':'
 | __switch_statement1 statement
 ;
 
-constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
-| IDENTIFIER '(' parameter_list ')' statement_block
-| modifier IDENTIFIER '(' ')' statement_block
-| IDENTIFIER '(' ')' statement_block
+constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block									{
+																														if(strcmp($2, strClassName) != 0){
+																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
+																															czyPoprawny = false;
+																														}
+																													}				
+| IDENTIFIER '(' parameter_list ')' statement_block																	{
+																														if(strcmp($2, strClassName) != 0){
+																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
+																															czyPoprawny = false;
+																														}
+																													}
+| modifier IDENTIFIER '(' ')' statement_block																		{
+																														if(strcmp($2, strClassName) != 0){
+																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
+																															czyPoprawny = false;
+																														}
+																													}
+| IDENTIFIER '(' ')' statement_block																				{
+																														if(strcmp($2, strClassName) != 0){
+																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
+																															czyPoprawny = false;
+																														}
+																													}
 ;
 
 method_variable_declaration: modifier variable_declaration

@@ -38,8 +38,8 @@
 "double" {return DOUBLE;}
 
 
-"class"	{return CLASS; }
-"extends" {return EXTENDS;}
+"class"	{ return CLASS; }
+"extends" { return EXTENDS;}
 "implements" {return IMPLEMENTS; }
 "interface" {return INTERFACE; }
 "if" {return IF; }
@@ -95,7 +95,7 @@
 "%"	{return yytext[0]; }
 "~" {return yytext[0]; }
 
-[a-zA-Z$_]+[a-zA-Z0-9$_]* {return IDENTIFIER; }
+[a-zA-Z$_]+[a-zA-Z0-9$_]* {yylval = strdup(yytext); return IDENTIFIER; }
 
 
 \n {++lineCount;}
