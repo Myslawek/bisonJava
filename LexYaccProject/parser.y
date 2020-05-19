@@ -205,7 +205,7 @@ __variable_declaration2: __variable_declaration2 ',' variable_declarator
 
 variable_declarator: IDENTIFIER 
 | IDENTIFIER '[' ']'
-| IDENTIFIER '=' IDENTIFIER
+| IDENTIFIER '=' variable_initializer
 ;
 
 if_statement: IF '(' expression ')' statement_block
@@ -409,7 +409,7 @@ __arglist_opt: arglist
 |
 ;
 
-variable_initializer: '{' expression '}'
+variable_initializer: expression
 | '{' __variable_initializer1 '}'
 ;
 
