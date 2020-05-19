@@ -222,8 +222,13 @@ __for_statement1: variable_declaration
 | ';'
 ;
 
-try_statement: TRY statement_block CATCH '(' parameter ')' statement_block 
-| TRY statement_block CATCH '(' parameter ')' statement_block FINALLY statement_block
+try_statement: TRY statement_block CATCH '(' parameter ')' __catch_statement
+| TRY statement_block CATCH '(' parameter ')' __catch_statement FINALLY statement_block
+;
+
+__catch_statement: '{' IDENTIFIER '.' IDENTIFIER '(' ')' ';' '}'
+| statement
+| '{' '}'
 ;
 
 constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
