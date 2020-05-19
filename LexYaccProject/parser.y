@@ -38,6 +38,9 @@
 %token CATCH
 %token FINALLY
 %token INTERFACE
+%token AMPERSAND
+%token TRUE
+%token FALSE
 %token ERROR
 
 %%
