@@ -394,6 +394,17 @@ arglist: arglist ',' expression
 __arglist_opt: arglist
 |
 ;
+
+variable_initializer: '{' expression '}'
+| '{' __variable_initializer1 '}'
+;
+
+__variable_initializer1: expression
+| __variable_initializer1 ','
+| __variable_initializer1 ',' __variable_initializer1
+| __variable_initializer1 ',' __variable_initializer1 ','
+;
+
 %%
 
 void yyerror(char *s) {
