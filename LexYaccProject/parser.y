@@ -202,7 +202,70 @@ interface_method_declaration: modifier type IDENTIFIER '(' ')' ';'
 | modifier type IDENTIFIER '(' parameter_list ')' ';'
 | type IDENTIFIER '(' parameter_list ')' ';'
 | type IDENTIFIER '(' ')' ';' 
+;
 
+numeric_expression: __num_expr1 expression
+| expression __num_expr2
+| expression __num_expr3 expression
+;
+
+__num_expr1: '-' 
+| '+' '+' 
+| '-' '-'
+;
+
+__num_expr2: '+' '+' 
+| '-' '-'
+;
+
+__num_expr3: '+' 
+| '+' '=' 
+| '-' 
+| '-' '=' 
+| '*' 
+| '*' '=' 
+| '/' 
+| '/' '=' 
+| '%' 
+| '%' '='
+;
+
+testing_expression: expression __testing_expr expression 
+;
+
+__testing_expr: '>' 
+| '<' 
+| '>' '=' 
+| '<' '=' 
+| '=' '=' 
+| '!' '='
+;
+
+logical_expression: '!' expression
+| expression __logical_expr1 expression
+| expression '?' expression ':' expression
+| TRUE
+| FALSE 
+;
+
+__logical_expr1: AMPERSAND 
+| AMPERSAND '=' 
+| '|' 
+| '|' '=' 
+| '^' 
+| '^' '=' 
+| AMPERSAND AMPERSAND 
+| '|' '|' '=' 
+| '%' 
+| '%' '='
+;
+
+string_expression: expression __string_expr1 expression
+;
+
+__string_expr1: '+' 
+| '+' '='
+;
 %%
 
 void yyerror(char *s) {
