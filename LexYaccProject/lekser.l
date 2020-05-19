@@ -4,6 +4,8 @@
 	#include <stdlib.h> 
 	#include "parser.h"
 
+	unsigned int lineCount = 1;
+
 	void SetInputFile(const char* strFileName);
 	void CloseInputFile();
 
@@ -64,8 +66,9 @@
 
 [a-zA-Z$_]?[a-zA-Z0-9$_]* {return IDENTIFIER;}
 
-\n ;
-. ;
+\n {++lineCount;}
+\t|" " ;
+. {printf("Niespodziewany symbol: %c\n", yytext[0]); return ERROR;}
 
 %%
 
@@ -81,4 +84,8 @@ void CloseInputFile(){
 		fclose(pInputFile);
 		pInputFile = NULL;
 	}
+}
+
+unsigned int getLineCount(){
+	return lineCount;
 }

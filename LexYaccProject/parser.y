@@ -38,6 +38,7 @@
 %token CATCH
 %token FINALLY
 %token INTERFACE
+%token ERROR
 
 %%
 
@@ -48,7 +49,7 @@ compilation_unit: type_declaration													{printf("Poprawny kod");}
 |  package_statement type_declaration												{printf("Poprawny kod");}
 |  package_statement import_statement												{printf("Poprawny kod");}
 |  package_statement import_statement type_declaration								{printf("Poprawny kod");}
-|
+|  
 ;
 
 package_statement: PACKAGE package_name ';'
@@ -205,12 +206,12 @@ interface_method_declaration: modifier type IDENTIFIER '(' ')' ';'
 %%
 
 void yyerror(char *s) {
-    fprintf(stderr, "\n%s\n", s);
+    fprintf(stderr, "\n%s\nPodany kod programu zawiera bledy w linii nr %u\n", s, getLineCount());
 }
 
 int main() 
 {
-	SetInputFile("Interface.txt");
+	SetInputFile("Program.txt");
 
     yyparse();    
 
