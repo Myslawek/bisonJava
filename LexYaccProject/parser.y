@@ -93,22 +93,18 @@ type_declaration: class_declaration
 | interface_declaration
 |
 
-class_declaration: modifier_class CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+class_declaration: modifier CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
 | CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier_class CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier_class CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
+| modifier CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
 | CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
-| modifier_class CLASS IDENTIFIER '{' method_field_declaration '}'
+| modifier CLASS IDENTIFIER '{' method_field_declaration '}'
 | CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
 | CLASS IDENTIFIER '{' method_field_declaration '}'
 
 
 class_interface_names: interface_name ',' interface_name
 | interface_name
-
-modifier_class: PUBLIC
-| PRIVATE
-| PROTECTED
 ;
 
 method_field_declaration: method_field_declaration method_declaration
@@ -191,10 +187,11 @@ for_statement: FOR '(' ')' statement_block
 try_statement: TRY statement_block CATCH '(' parameter ')' statement_block 
 | TRY statement_block CATCH '(' parameter ')' statement_block FINALLY statement_block
 
-constructor_declaration: modifier_class IDENTIFIER '(' parameter_list ')' statement_block 
+constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
 | IDENTIFIER '(' parameter_list ')' statement_block
-| modifier_class IDENTIFIER '(' ')' statement_block
+| modifier IDENTIFIER '(' ')' statement_block
 | IDENTIFIER '(' ')' statement_block
+;
 
 method_variable_declaration: modifier variable_declaration
 | variable_declaration
@@ -203,10 +200,11 @@ static_initializer: STATIC static_statement_block
 
 static_statement_block: '{' statement '}'
 
-interface_declaration: modifier_class INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
+interface_declaration: modifier INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
 | INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
-| modifier_class INTERFACE IDENTIFIER'{' interface_field_declaration '}' 
+| modifier INTERFACE IDENTIFIER'{' interface_field_declaration '}' 
 | INTERFACE IDENTIFIER '{' interface_field_declaration '}' 
+;
 
 interface_field_declaration: interface_field_declaration interface_method_declaration
 | interface_field_declaration method_variable_declaration 
