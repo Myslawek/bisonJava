@@ -152,40 +152,79 @@ type_specifier: class_name
 
 parameter_list: parameter
 | parameter_list ',' parameter
+;
 
 parameter: type IDENTIFIER
 | type IDENTIFIER '[' ']'
+;
 
-statement_block: '{' statement '}'
+statement_block: '{' __statement_block1 '}'
+;
+
+__statement_block1: __statement_block1 statement 
 | statement
-| '{' '}'
+;
 
-statement: statement variable_declaration
-| statement if_statement
-| statement do_statement
-| statement while_statement
-| statement for_statement
-| statement try_statement
+
+statement: variable_declaration
+| expression ';'
+| statement_block
+| if_statement
+| do_statement
+| while_statement
+| for_statement
+| try_statement
+| SYNCHRONIZED '(' expression ')' statement
+| RETURN expression ';'
+| THROW expression ';'
+| IDENTIFIER ':' statement
+| BREAK __identifier_opt ';'
+| CONTINUE __identifier_opt ';'
+| ';'
+;
+
+__identifier_opt: IDENTIFIER
 |
+;
 
-variable_declaration: type variable_declarator ';'
+variable_declaration: __modifiers_multiple __variable_declaration2 ';'
+| __variable_declaration2 ';'
+;
+
+__modifiers_multiple: __modifiers_multiple modifier
+| modifier
+;
+
+__variable_declaration2: __variable_declaration2 ',' variable_declarator
+| type variable_declarator
+;
 
 variable_declarator: IDENTIFIER 
 | IDENTIFIER '[' ']'
 | IDENTIFIER '=' IDENTIFIER
+;
 
+if_statement: IF '(' expression ')' statement_block
+| IF '(' expression ')' statement_block ELSE statement_block 
+;
 
-if_statement: IF '(' ')' statement_block
-| IF '(' ')' statement_block ELSE statement_block 
-
-do_statement: DO statement_block WHILE '(' ')' ';'
+do_statement: DO statement_block WHILE '(' expression ')' ';'
+;
 
 while_statement: WHILE '(' ')' statement_block
+;
 
-for_statement: FOR '(' ')' statement_block
+for_statement: FOR '(' __for_statement1 expression ';' __expression_opt ')' statement 
+;
+
+__for_statement1: variable_declaration
+| expression ';'
+| ';'
+;
 
 try_statement: TRY statement_block CATCH '(' parameter ')' statement_block 
 | TRY statement_block CATCH '(' parameter ')' statement_block FINALLY statement_block
+;
 
 constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
 | IDENTIFIER '(' parameter_list ')' statement_block
@@ -195,10 +234,10 @@ constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_bl
 
 method_variable_declaration: modifier variable_declaration
 | variable_declaration
+;
 
-static_initializer: STATIC static_statement_block
-
-static_statement_block: '{' statement '}'
+static_initializer: STATIC statement_block
+;
 
 interface_declaration: modifier INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
 | INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
