@@ -50,8 +50,11 @@
 "try" {return TRY; }
 "catch" {return CATCH;}
 "finally" {return FINALLY;}
+"true" {return TRUE;}
+"false" {return FALSE;}
 
 
+"&" {return AMPERSAND; }
 ";" { return yytext[0]; }
 "." { return yytext[0]; }
 "{" { return yytext[0]; }
@@ -63,6 +66,15 @@
 "," {return yytext[0]; }
 "=" {return yytext[0]; }
 "*" {return yytext[0]; }
+"+" {return yytext[0]; }
+">"	{return yytext[0]; }
+"<"	{return yytext[0]; }
+"!"	{return yytext[0]; }
+"?" {return yytext[0]; }
+":" {return yytext[0]; }
+"|" {return yytext[0]; }
+"^"	{return yytext[0]; }
+"%"	{return yytext[0]; }
 
 [a-zA-Z$_]?[a-zA-Z0-9$_]* {return IDENTIFIER;}
 
