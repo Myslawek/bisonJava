@@ -282,6 +282,76 @@ string_expression: expression __string_expr1 expression
 __string_expr1: '+' 
 | '+' '='
 ;
+
+bit_expression: '~' expression 
+| expression __bit_expr1 expression
+;
+
+__bit_expr1: '>' '>' '=' 
+| '<' '<' 
+| '>' '>' 
+| '>' '>' '>'
+;
+
+casting_expression:	'(' type ')' expression
+;
+
+creating_expression: NEW __creating_expr1
+;
+
+__creating_expr1: class_name '(' __arglist_opt ')'
+| __creating_expr2
+| '(' expression ')'
+;
+
+__creating_expr2: __creating_expr2 '[' ']' 
+| type_specifier '[' __expression_opt ']'
+;
+
+literal_expression: INTEGER_LITERAL
+| FLOAT_LITERAL
+| STRING
+| CHAR_VAL
+;
+
+expression: numeric_expression
+| testing_expression
+| logical_expression
+| string_expression
+| bit_expression
+| casting_expression
+| creating_expression
+| literal_expression
+| _NULL
+| SUPER
+| THIS
+| IDENTIFIER
+| '(' expression ')'
+| expression __expr1
+;
+
+__expr1: '(' __arglist_opt ')' 
+| '[' expression ']' 
+| '.' expression 
+| ',' expression 
+| INSTANCEOF __expr2
+;
+
+__expr2: class_name 
+| interface_name
+;
+
+__expression_opt: expression
+|
+;
+
+arglist: arglist ',' expression
+| expression
+;
+
+__arglist_opt: arglist
+|
+;
 %%
 
 void yyerror(char *s) {
