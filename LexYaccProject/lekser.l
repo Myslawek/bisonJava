@@ -52,7 +52,22 @@
 "finally" {return FINALLY;}
 "true" {return TRUE;}
 "false" {return FALSE;}
+"new" {return NEW;}
+"null" {return _NULL;}
+"super" {return SUPER;}
+"this" {return THIS;}
+"instanceof" {return INSTANCEOF;}
+"synchronized" {return SYNCHRONIZED;}
+"return" {return RETURN;}
+"throw" {return THROW;}
+"break" {return BREAK;}
+"continue" {return CONTINUE;}
 
+
+"'"[a-zA-Z0-9$_]"'" {return CHAR_VAL; }
+"\""[a-zA-Z0-9$_]*"\"" {return STRING; }
+"-"?([0]|[1-9][0-9]*) {return INTEGER_LITERAL; }
+"-"?([0]|[1-9][0-9]*)"."[0-9]+ {return FLOAT_LITERAL; }
 
 "&" {return AMPERSAND; }
 ";" { return yytext[0]; }
@@ -75,8 +90,10 @@
 "|" {return yytext[0]; }
 "^"	{return yytext[0]; }
 "%"	{return yytext[0]; }
+"~" {return yytext[0]; }
 
-[a-zA-Z$_]?[a-zA-Z0-9$_]* {return IDENTIFIER;}
+[a-zA-Z$_]+[a-zA-Z0-9$_]* {return IDENTIFIER; }
+
 
 \n {++lineCount;}
 \t|" " ;

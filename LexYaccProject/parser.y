@@ -41,6 +41,19 @@
 %token AMPERSAND
 %token TRUE
 %token FALSE
+%token NEW
+%token CHAR_VAL
+%token STRING
+%token INTEGER_LITERAL
+%token FLOAT_LITERAL
+%token _NULL
+%token SUPER
+%token THIS
+%token INSTANCEOF
+%token RETURN
+%token BREAK
+%token CONTINUE
+%token THROW
 %token ERROR
 
 %%
