@@ -4,105 +4,203 @@
 	#include <math.h>
 	void yyerror(char *s);
 %}
-%token WHOLE_NUMBER
-%token REAL_NUMBER
-%token WHOLE_NUM_PRIMITIVE
-%token REAL_NUM_PRIMITIVE
-%token BOOLEAN
-%token VOID
-%token CHAR_SEQUENCE
-%token STRING
-%token ACCESS_MODIFIER
-%token STRUCTURE
-%token CONTROL_FLOW
-%token NEW
-%token BOOLEAN_LIT
-%token _NULL
-%token ARGS_MATH_OP
-%token ARG_MATH_OP
-%token LOGICAL_OP
-%token OPEN_BLOCK
-%token CLOSE_BLOCK
-%token OPEN_SQUARE
-%token CLOSE_SQUARE
-%token OPEN_ROUND
-%token CLOSE_ROUND
-%token MAIN_METHOD
-%token DOT
-%token COMMA
-%token SEMICOLON
-%token RETURN
-%token VARIABLE
-%token ASSIGN
-%token WHITE_SYMBOL
+
 %token PACKAGE
-%token ERROR
+%token IDENTIFIER
+%token IMPORT
+%token PUBLIC
+%token PRIVATE
+%token PROTECTED
+%token STATIC
+%token FINAL
+%token NATIVE
+%token SYNCHRONIZED
+%token ABSTRACT
+%token TREADSAFE
+%token TRANSIENT
+%token CLASS
+%token EXTENDS
+%token IMPLEMENTS
+%token BOOLEAN
+%token BYTE
+%token CHAR
+%token SHORT
+%token INT
+%token FLOAT
+%token LONG
+%token DOUBLE
+%token IF
+%token ELSE
+%token DO
+%token WHILE
+%token FOR
+%token TRY
+%token CATCH
+%token FINALLY
+%token INTERFACE
+
 %%
 
-program: program package_def SEMICOLON ws main {printf("Poprawny kod");}
-| program package_def SEMICOLON ws main ws {printf("Poprawny kod");}
+compilation_unit: type_declaration													{printf("Poprawny kod");}
+|  package_statement 																{printf("Poprawny kod");}
+|  import_statement 																{printf("Poprawny kod");}
+|  import_statement type_declaration												{printf("Poprawny kod");}
+|  package_statement type_declaration												{printf("Poprawny kod");}
+|  package_statement import_statement												{printf("Poprawny kod");}
+|  package_statement import_statement type_declaration								{printf("Poprawny kod");}
 |
 ;
 
-main: MAIN_METHOD ws method 
-| MAIN_METHOD method
+package_statement: PACKAGE package_name ';'
 ;
 
-method: OPEN_BLOCK block CLOSE_BLOCK 
-| OPEN_BLOCK ws block CLOSE_BLOCK 
-| OPEN_BLOCK block ws CLOSE_BLOCK 
-| OPEN_BLOCK ws block ws CLOSE_BLOCK
+package_name: IDENTIFIER 
+| package_name '.' IDENTIFIER
 ;
 
-block: block instruction 
-| block ws instruction
-| instruction
+import_statement: import_statement IMPORT package_name '.' '*' ';' 
+| import_statement IMPORT class_name ';' 
+| import_statement IMPORT interface_name ';' 
+|
 ;
 
-instruction: declaration SEMICOLON 
-| declaration ws SEMICOLON 
-| definition SEMICOLON 
-| definition ws SEMICOLON 
+class_name: IDENTIFIER
+| package_name '.' IDENTIFIER
 ;
 
-declaration: assignable_primitive ws VARIABLE
-| ws assignable_primitive ws VARIABLE
+interface_name: IDENTIFIER
+| package_name '.' IDENTIFIER
 ;
 
-definition: WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
-| REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
-| REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
-| BOOLEAN var_assign BOOLEAN_LIT 
-| ws WHOLE_NUM_PRIMITIVE var_assign WHOLE_NUMBER 
-| ws REAL_NUM_PRIMITIVE var_assign REAL_NUMBER
-| ws REAL_NUM_PRIMITIVE var_assign WHOLE_NUMBER
-| ws BOOLEAN var_assign BOOLEAN_LIT 
-| WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
-| REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
-| REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
-| BOOLEAN var_assign ws BOOLEAN_LIT 
-| ws WHOLE_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER 
-| ws REAL_NUM_PRIMITIVE var_assign ws REAL_NUMBER
-| ws REAL_NUM_PRIMITIVE var_assign ws WHOLE_NUMBER
-| ws BOOLEAN var_assign ws BOOLEAN_LIT 
+type_declaration: class_declaration 
+| interface_declaration
+|
+
+class_declaration: modifier_class CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| CLASS IDENTIFIER EXTENDS class_name IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier_class CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier_class CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
+| CLASS IDENTIFIER IMPLEMENTS class_interface_names '{' method_field_declaration '}'
+| modifier_class CLASS IDENTIFIER '{' method_field_declaration '}'
+| CLASS IDENTIFIER EXTENDS class_name '{' method_field_declaration '}'
+| CLASS IDENTIFIER '{' method_field_declaration '}'
+
+
+class_interface_names: interface_name ',' interface_name
+| interface_name
+
+modifier_class: PUBLIC
+| PRIVATE
+| PROTECTED
 ;
 
-package_def: PACKAGE ws VARIABLE
-| package_def DOT VARIABLE
+method_field_declaration: method_field_declaration method_declaration
+| method_field_declaration constructor_declaration
+| method_field_declaration method_variable_declaration 
+| method_field_declaration static_initializer
+| method_field_declaration ';' 
+| 
 ;
 
-var_assign: ws VARIABLE ws ASSIGN
-| ws VARIABLE ASSIGN
+method_declaration: modifier type IDENTIFIER '(' ')' statement_block 
+| modifier type IDENTIFIER '(' parameter_list ')' statement_block
+| type IDENTIFIER '(' parameter_list ')' statement_block
+| type IDENTIFIER '(' ')' statement_block 
+
+
+
+modifier: PUBLIC
+| PRIVATE
+| PROTECTED
+| STATIC
+| FINAL
+| NATIVE
+| SYNCHRONIZED
+| ABSTRACT
+| TREADSAFE
+| TRANSIENT
 ;
 
-assignable_primitive: WHOLE_NUM_PRIMITIVE 
-| REAL_NUM_PRIMITIVE 
+type: type_specifier
+| type_specifier '[' ']'
+;
+
+type_specifier: class_name
+| interface_name 
 | BOOLEAN
+| BYTE
+| CHAR
+| SHORT
+| INT
+| FLOAT
+| LONG
+| DOUBLE
 ;
 
-ws: ws WHITE_SYMBOL
-| WHITE_SYMBOL
+parameter_list: parameter
+| parameter_list ',' parameter
+
+parameter: type IDENTIFIER
+| type IDENTIFIER '[' ']'
+
+statement_block: '{' statement '}'
+| statement
+| '{' '}'
+
+statement: statement variable_declaration
+| statement if_statement
+| statement do_statement
+| statement while_statement
+| statement for_statement
+| statement try_statement
+|
+
+variable_declaration: type variable_declarator ';'
+
+variable_declarator: IDENTIFIER 
+| IDENTIFIER '[' ']'
+| IDENTIFIER '=' IDENTIFIER
+
+
+if_statement: IF '(' ')' statement_block
+| IF '(' ')' statement_block ELSE statement_block 
+
+do_statement: DO statement_block WHILE '(' ')' ';'
+
+while_statement: WHILE '(' ')' statement_block
+
+for_statement: FOR '(' ')' statement_block
+
+try_statement: TRY statement_block CATCH '(' parameter ')' statement_block 
+| TRY statement_block CATCH '(' parameter ')' statement_block FINALLY statement_block
+
+constructor_declaration: modifier_class IDENTIFIER '(' parameter_list ')' statement_block 
+| IDENTIFIER '(' parameter_list ')' statement_block
+| modifier_class IDENTIFIER '(' ')' statement_block
+| IDENTIFIER '(' ')' statement_block
+
+method_variable_declaration: modifier variable_declaration
+| variable_declaration
+
+static_initializer: STATIC static_statement_block
+
+static_statement_block: '{' statement '}'
+
+interface_declaration: modifier_class INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
+| INTERFACE IDENTIFIER EXTENDS interface_name '{' interface_field_declaration '}' 
+| modifier_class INTERFACE IDENTIFIER'{' interface_field_declaration '}' 
+| INTERFACE IDENTIFIER '{' interface_field_declaration '}' 
+
+interface_field_declaration: interface_field_declaration interface_method_declaration
+| interface_field_declaration method_variable_declaration 
+| interface_field_declaration ';' 
+| 
 ;
+
+interface_method_declaration: modifier type IDENTIFIER '(' ')' ';' 
+| modifier type IDENTIFIER '(' parameter_list ')' ';'
+| type IDENTIFIER '(' parameter_list ')' ';'
+| type IDENTIFIER '(' ')' ';' 
 
 %%
 
@@ -112,7 +210,7 @@ void yyerror(char *s) {
 
 int main() 
 {
-	SetInputFile("Program.txt");
+	SetInputFile("Interface.txt");
 
     yyparse();    
 
