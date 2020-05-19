@@ -50,6 +50,9 @@
 "try" {return TRY; }
 "catch" {return CATCH;}
 "finally" {return FINALLY;}
+"switch" {return SWITCH;}
+"case" {return CASE;}
+"default" {return DEFAULT;}
 "true" {return TRUE;}
 "false" {return FALSE;}
 "new" {return NEW;}

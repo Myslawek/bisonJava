@@ -37,6 +37,9 @@
 %token TRY
 %token CATCH
 %token FINALLY
+%token SWITCH
+%token CASE
+%token DEFAULT
 %token INTERFACE
 %token AMPERSAND
 %token TRUE
@@ -174,6 +177,7 @@ statement: variable_declaration
 | while_statement
 | for_statement
 | try_statement
+| switch_statement
 | SYNCHRONIZED '(' expression ')' statement
 | RETURN expression ';'
 | THROW expression ';'
@@ -229,6 +233,14 @@ try_statement: TRY statement_block CATCH '(' parameter ')' __catch_statement
 __catch_statement: '{' IDENTIFIER '.' IDENTIFIER '(' ')' ';' '}'
 | statement
 | '{' '}'
+;
+
+switch_statement: SWITCH '(' expression ')' '{' __switch_statement1 '}'
+;
+
+__switch_statement1: CASE expression ':'
+| DEFAULT ':'
+| statement
 ;
 
 constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
