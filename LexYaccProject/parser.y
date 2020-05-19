@@ -239,8 +239,10 @@ switch_statement: SWITCH '(' expression ')' '{' __switch_statement1 '}'
 ;
 
 __switch_statement1: CASE expression ':'
+| __switch_statement1 CASE expression ':'
 | DEFAULT ':'
-| statement
+| __switch_statement1 DEFAULT ':'
+| __switch_statement1 statement
 ;
 
 constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_block 
