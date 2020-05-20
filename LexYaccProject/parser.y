@@ -3,11 +3,31 @@
 	#include <stdio.h>
 	#include <math.h>
 	#include <stdbool.h>
+	#include <string.h>
 
-	void yyerror(char *s);
+	#define MAX_DECLARATIONS_AMOUNT 400
+
+	typedef struct sNode {
+		char* identifier;
+		char* type;
+		struct sNode* next;
+	}Declaration;
 
 	char* strClassName;
 	bool czyPoprawny = true;
+
+	Declaration* classVariables = NULL;
+	Declaration* methodVariables = NULL;
+
+
+	Declaration* addNode(Declaration* head, const char* gvnIdentifier, const char* gvnType);
+	int identifierExists(Declaration* head, const char* gvnIdentifier);
+	Declaration* freeList(Declaration* head);
+	Declaration* offer(Declaration* head, const char* gvnIdentifier, const char* gvnType);
+	Declaration* getByIdentifier(Declaration* head, const char* gvnIdentifier);
+
+
+	void yyerror(char *s);
 %}
 
 %token PACKAGE
@@ -155,11 +175,11 @@ method_field_declaration: method_field_declaration method_declaration
 | 
 ;
 
-method_declaration: modifier type IDENTIFIER '(' ')' statement_block 
-| modifier type IDENTIFIER '(' parameter_list ')' statement_block
-| type IDENTIFIER '(' parameter_list ')' statement_block
-| type IDENTIFIER '(' ')' statement_block 
-
+method_declaration: modifier type IDENTIFIER '(' ')' statement_block { methodVariables=freeList(methodVariables); }
+| modifier type IDENTIFIER '(' parameter_list ')' statement_block { methodVariables=freeList(methodVariables); }
+| type IDENTIFIER '(' parameter_list ')' statement_block { methodVariables=freeList(methodVariables); }
+| type IDENTIFIER '(' ')' statement_block { methodVariables=freeList(methodVariables); }
+;
 
 
 modifier: PUBLIC
@@ -236,8 +256,8 @@ __modifiers_multiple: __modifiers_multiple modifier
 | modifier
 ;
 
-__variable_declaration2: __variable_declaration2 ',' variable_declarator
-| type variable_declarator
+__variable_declaration2: __variable_declaration2 ',' variable_declarator {methodVariables=offer(methodVariables, $3, $1)}
+| type variable_declarator { methodVariables=offer(methodVariables, $2, $1);}
 ;
 
 variable_declarator: IDENTIFIER 
@@ -287,24 +307,28 @@ constructor_declaration: modifier IDENTIFIER '(' parameter_list ')' statement_bl
 																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
 																															czyPoprawny = false;
 																														}
+																														methodVariables=freeList(methodVariables);
 																													}				
 | IDENTIFIER '(' parameter_list ')' statement_block																	{
 																														if(strcmp($2, strClassName) != 0){
 																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
 																															czyPoprawny = false;
 																														}
+																														methodVariables=freeList(methodVariables);
 																													}
 | modifier IDENTIFIER '(' ')' statement_block																		{
 																														if(strcmp($2, strClassName) != 0){
 																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
 																															czyPoprawny = false;
 																														}
+																														methodVariables=freeList(methodVariables);
 																													}
 | IDENTIFIER '(' ')' statement_block																				{
 																														if(strcmp($2, strClassName) != 0){
 																															printf("Nazwa konstruktora jest inna niz nazwa klasy - linia %u\n", getLineCount());
 																															czyPoprawny = false;
 																														}
+																														methodVariables=freeList(methodVariables);
 																													}
 ;
 
@@ -482,6 +506,61 @@ void yyerror(char *s) {
     fprintf(stderr, "\n%s\nPodany kod programu zawiera bledy w linii nr %u\n", s, getLineCount());
 }
 
+Declaration* addNode(Declaration* head, const char* gvnIdentifier, const char* gvnType) {
+    Declaration* element = NULL;
+    element = (Declaration*)malloc(sizeof(Declaration));
+    element->identifier = (char*)malloc(sizeof(char) * strlen(gvnIdentifier) + 1);
+    strcpy((element->identifier), gvnIdentifier);
+    element->type = (char*)malloc(sizeof(char) * strlen(gvnType) + 1);
+    strcpy((element->type), gvnType);
+    element->next = head;
+    head = element;
+    return head;
+}
+
+Declaration* freeList(Declaration* head){
+    Declaration* temp = NULL;
+    while (head != NULL){
+        temp = head;
+        head = head->next;
+        free(temp->identifier);
+        free(temp->type);
+        free(temp);
+    }
+    return head;
+}
+
+int identifierExists(Declaration* head, const char* gvnIdentifier) {
+    Declaration* temp = head;
+    while (temp!=NULL) {
+        if (strcmp((temp->identifier),gvnIdentifier)==0) {
+            return 1;
+        }
+        temp = temp->next;
+    }
+    return -1;
+}
+
+Declaration* getByIdentifier(Declaration* head, const char* gvnIdentifier) {
+    Declaration* temp = head;
+    while (temp != NULL) {
+        if (strcmp((temp->identifier), gvnIdentifier) == 0) {
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return NULL;
+}
+
+Declaration* offer(Declaration* head, const char* gvnIdentifier, const char* gvnType) {
+    Declaration* temp = getByIdentifier(head, gvnIdentifier);
+    if (temp != NULL) {
+        printf("On line %d: Specified variable %s was already declared as %s.\n", getLineCount(), temp->identifier, temp->type);
+        return head;
+    }
+    return addNode(head, gvnIdentifier, gvnType);
+}
+
 int main() 
 {
 	SetInputFile("Program.txt");
@@ -490,5 +569,8 @@ int main()
 
 	CloseInputFile();
    
+	freeList(classVariables);
+	freeList(methodVariables);
+
 	return 0;
 }
