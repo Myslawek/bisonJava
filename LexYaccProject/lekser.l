@@ -28,14 +28,14 @@
 "abstract" {return ABSTRACT;}
 "treadsafe" {return TREADSAFE; }
 "transient" {return TRANSIENT; }
-"boolean" {return BOOLEAN; }
-"byte" {return BYTE;}
-"char" {return CHAR;}
-"short" {return SHORT;}
-"int" {return INT;}
-"float" {return FLOAT;}
-"long" {return LONG;}
-"double" {return DOUBLE;}
+"boolean" {yylval = strdup(yytext); return BOOLEAN; }
+"byte" {yylval = strdup(yytext); return BYTE;}
+"char" {yylval = strdup(yytext); return CHAR;}
+"short" {yylval = strdup(yytext); return SHORT;}
+"int" {yylval = strdup(yytext); return INT;}
+"float" {yylval = strdup(yytext); return FLOAT;}
+"long" {yylval = strdup(yytext); return LONG;}
+"double" {yylval = strdup(yytext); return DOUBLE;}
 
 
 "class"	{ return CLASS; }
