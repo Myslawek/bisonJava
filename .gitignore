@@ -3,7 +3,4 @@
 # But not those
 !.gitignore
 !**/lekser.l
-!**/lekser.c
 !**/parser.y
-!**/parser.h
-!**/parser.c
