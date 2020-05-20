@@ -12,7 +12,7 @@
 	FILE* pInputFile = NULL;
 %}
 
-
+%x COMMENT COMMENT_LINE
 
 %%
 
@@ -66,6 +66,19 @@
 "break" {return BREAK;}
 "continue" {return CONTINUE;}
 
+"/*" {BEGIN(COMMENT); }
+"//" {BEGIN(COMMENT_LINE); }
+
+<COMMENT>{
+"*/" {BEGIN(INITIAL); } 
+"\n"	{++lineCount; }
+.	;
+}
+
+<COMMENT_LINE>{
+"\n" {++lineCount; BEGIN(INITIAL); }
+.	;
+}
 
 "'"[a-zA-Z0-9$_]"'" {return CHAR_VAL; }
 "\""[a-zA-Z0-9$_]*"\"" {return STRING; }
