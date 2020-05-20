@@ -68,31 +68,40 @@
 
 compilation_unit: type_declaration													{
 																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																							printf("Poprawnie zweryfikowano sekcje deklaracji klasy/interfejsu\n");
 																					}
 |  package_statement 																{
 																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																							printf("Poprawnie zweryfikowano sekcje tworzenia pakietu\n");
 																					}
 |  import_statement 																{
 																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																							printf("Poprawnie zweryfikowano sekcje importu\n");
 																					}
 |  import_statement type_declaration												{
-																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																						if(czyPoprawny){
+																							printf("Poprawnie zweryfikowano sekcje importu\n");
+																							printf("Poprawnie zweryfikowano sekcje deklaracji klasy/interfejsu\n");
+																						}
 																					}
 |  package_statement type_declaration												{
-																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																						if(czyPoprawny){
+																							printf("Poprawnie zweryfikowano sekcje tworzenia pakietu\n");
+																							printf("Poprawnie zweryfikowano sekcje deklaracji klasy/interfejsu\n");
+																						}
 																					}
 |  package_statement import_statement												{
-																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																						if(czyPoprawny){
+																							printf("Poprawnie zweryfikowano sekcje tworzenia pakietu\n");
+																							printf("Poprawnie zweryfikowano sekcje importu\n");
+																						}
 																					}
 |  package_statement import_statement type_declaration								{
-																						if(czyPoprawny)
-																							printf("Poprawny kod");
+																						if(czyPoprawny){
+																							printf("Poprawnie zweryfikowano sekcje tworzenia pakietu\n");
+																							printf("Poprawnie zweryfikowano sekcje importu\n");
+																							printf("Poprawnie zweryfikowano sekcje deklaracji klasy/interfejsu\n");
+																						}
 																					}
 |  
 ;
