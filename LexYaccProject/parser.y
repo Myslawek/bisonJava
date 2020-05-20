@@ -568,9 +568,9 @@ int main()
     yyparse();    
 
 	CloseInputFile();
-   
-	freeList(classVariables);
-	freeList(methodVariables);
+
+	classVariables=freeList(classVariables);
+	methodVariables=freeList(methodVariables);
 
 	return 0;
 }
